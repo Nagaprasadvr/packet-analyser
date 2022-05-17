@@ -3393,7 +3393,7 @@ var trim = String.prototype.trim ?
     var layoutMode = this.options.layoutMode;
     var mode = this.modes[ layoutMode ];
     if ( !mode ) {
-      
+
       throw new Error( 'No layout mode: ' + layoutMode );
     }
     // HACK sync mode's options
