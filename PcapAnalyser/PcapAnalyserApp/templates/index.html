@@ -52,7 +52,7 @@
           <ul>
             <li><a class="nav-link scrollto " href="{% url 'index' %}">Home</a></li>
 
-            <li><a class="nav-link scrollto " href="#">Upload File</a></li>
+            <li><a class="nav-link scrollto " href="{% url 'upload-file' %}">Upload File</a></li>
             <li><a class="nav-link scrollto" href="#">Download File</a></li>
 
             <li><a href="#">Blog</a></li>
@@ -66,14 +66,11 @@
       </div>
     </header><!-- End Header -->
 
-    {% block code %}
+    {% block content %}
 
     {% endblock %}
     <!-- ======= Hero Section ======= -->
-    <section>
-        <img src="{% static 'PcapAnalyserApp/assets/img/cyber-attack.png' %}" style="height:auto ;width:auto;" align="center">
-
-    </section><!-- End Hero -->
+   <!-- End Hero -->
     </div>
 
 </body>
