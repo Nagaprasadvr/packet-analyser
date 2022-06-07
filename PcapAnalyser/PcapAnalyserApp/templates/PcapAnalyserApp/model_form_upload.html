@@ -1,11 +1,22 @@
-{% extends 'index.html' %}
-
+{% extends 'PcapAnalyserApp/base.html' %}
+{% load static %}
 {% block content %}
+
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Upload</button>
   </form>
+<br>
+<br>
+<br>
 
-  <p><a href="{% url 'index' %}">Return to home</a></p>
+  <a class="btn-get-started" href="{% url 'index' %}" >Home</a>
+
+<section>
+  <span class="img-container  element"> <!-- Inline parent element -->
+    <img src="{% static 'PcapAnalyserApp/assets/img/cyber-attack.png' %}">
+  </span>
+
+</section>
 {% endblock %}
