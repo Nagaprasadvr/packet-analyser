@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-
+from django.contrib import messages
 from .models import Document
 from .forms import DocumentForm
 # Create your view here.
@@ -17,6 +17,7 @@ def model_form_upload(request):
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+
             return redirect('index')
     else:
         form = DocumentForm()
