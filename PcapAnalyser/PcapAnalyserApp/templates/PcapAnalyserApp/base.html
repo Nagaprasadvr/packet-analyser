@@ -1,11 +1,13 @@
-{% extends 'index.html' %}
+{% extends 'PcapAnalyserApp/index.html' %}
+{% load static %}
 
 {% block content %}
-{% load static %}
 <section>
-    <img src="{% static 'PcapAnalyserApp/assets/img/cyber-attack.png' %}" style="height:auto ;width:auto;" align="center">
-
+  <span class="img-container  element"> <!-- Inline parent element -->
+    <img src="{% static 'PcapAnalyserApp/assets/img/cyber-attack.png' %}">
+  </span>
 </section>
+<<<<<<< HEAD
 <ul>
     {% for obj in documents %}
       <li>
@@ -15,4 +17,6 @@
     {% endfor %}
   </ul>
 
+=======
+>>>>>>> 4f97381031804d8220e06c94eb05fb105792a799
 {% endblock %}
