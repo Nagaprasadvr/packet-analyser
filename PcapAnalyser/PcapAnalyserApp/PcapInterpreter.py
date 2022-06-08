@@ -1,6 +1,7 @@
 # this is the python script to interpret pcap files
 import binascii
 import sys
+import plotly.express as px
 import pandas as pd
 from struct import *
 import os
@@ -41,10 +42,11 @@ def buildDframe():
     tcp_fields = [field.name for field in TCP().fields_desc]
     udp_fields = [field.name for field in UDP().fields_desc]
 
-    dataframe_fields = ip_fields + ['time'] + tcp_fields + ['payload', 'payload_raw', 'payload_hex']
+    dataframe_fields = ip_fields + ['time'] + tcp_fields + ['payload', 'payload_raw', 'payload_hex']+['packetno']
 
     # Create blank DataFrame
     df = pd.DataFrame(columns=dataframe_fields)
+    i = 0
     for packet in cap[IP]:
         # Field array for each row of DataFrame
         field_values = []
@@ -72,10 +74,12 @@ def buildDframe():
         field_values.append(len(packet[layer_type].payload))
         field_values.append(packet[layer_type].payload.original)
         field_values.append(binascii.hexlify(packet[layer_type].payload.original))
+        field_values.append(i)
+        i+=1
         # Add row to DF
         df_append = pd.DataFrame([field_values], columns=dataframe_fields)
         df = pd.concat([df, df_append], axis=0)
-
+ 
     # Reset Index
     df = df.reset_index()
     # Drop old index column
@@ -85,10 +89,13 @@ def buildDframe():
     print(df.shape)
 
     print(df[['src', 'dst', 'sport', 'dport']])
+    print(df[['len','packetno']])
+    print(df[['time','packetno']])
+
     print(df[6:7]['len'])
+    return df
 
-
-buildDframe()
+d = buildDframe()
 
 frame = cap[6]
 pkt = frame.payload
@@ -121,3 +128,27 @@ def getSSHdata(apd):
 print(ap)
 print("\n\n---------SSH DATA ------------\n\n")
 print(getSSHdata(apd=ap))
+j = 0
+def plotSizevsNum(n):
+    fig = px.line(d[['len','packetno']],x='packetno',y='len',title="Packet size vs Packet number")
+    fig.write_html(f"./templates/PcapAnalyserApp/plot{n}.html")
+    global j
+    j+=1
+
+
+
+            
+                
+plotSizevsNum(j)
+print(d['time'][1])
+
+
+def plotTimevsNum(n):
+    
+   
+
+    fig = px.line(d[['time','packetno']],range_y=[d['time'].min(),d['time'].max()])
+    fig.write_html(f"./templates/PcapAnalyserApp/plot{n}.html")
+    global j
+    j+=1
+plotTimevsNum(j)    

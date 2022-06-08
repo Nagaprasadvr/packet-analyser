@@ -2,17 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-<<<<<<< HEAD
-import binascii
-import sys
-from struct import *
-import os
-import argparse
-from scapy.all import *
-import random
-=======
 from django.contrib import messages
->>>>>>> 4f97381031804d8220e06c94eb05fb105792a799
 from .models import Document
 from .forms import DocumentForm
 # Create your view here.
