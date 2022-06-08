@@ -6,5 +6,13 @@
     <img src="{% static 'PcapAnalyserApp/assets/img/cyber-attack.png' %}" style="height:auto ;width:auto;" align="center">
 
 </section>
+<ul>
+    {% for obj in documents %}
+      <li>
+        <a href="{{ obj.document.url }}">{{ obj.document.name }}</a>
+        <small>(Uploaded at: {{ obj.uploaded_at }})</small>
+      </li>
+    {% endfor %}
+  </ul>
 
 {% endblock %}

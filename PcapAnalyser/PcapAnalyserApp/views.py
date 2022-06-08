@@ -2,7 +2,13 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-
+import binascii
+import sys
+from struct import *
+import os
+import argparse
+from scapy.all import *
+import random
 from .models import Document
 from .forms import DocumentForm
 # Create your view here.
@@ -23,3 +29,12 @@ def model_form_upload(request):
     return render(request, 'PcapAnalyserApp/model_form_upload.html', {
         'form': form
     })
+
+def size_vs_no(request):
+    file1 = "/home/rishu/Projects/cisco_project_packet_analysis/PcapAnalyser/media/documents/SSHv2.cap"
+    caps = rdpcap(file1)
+    # for cap in caps:
+    print(len(caps))
+
+    return render(request, "PcapAnalyserApp/base.html")
+
