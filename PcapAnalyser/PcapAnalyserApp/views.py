@@ -24,3 +24,12 @@ def model_form_upload(request):
     return render(request, 'PcapAnalyserApp/model_form_upload.html', {
         'form': form
     })
+
+def size_vs_no(request):
+    file1 = "/home/rishu/Projects/cisco_project_packet_analysis/PcapAnalyser/media/documents/SSHv2.cap"
+    caps = rdpcap(file1)
+    # for cap in caps:
+    print(len(caps))
+
+    return render(request, "PcapAnalyserApp/base.html")
+
