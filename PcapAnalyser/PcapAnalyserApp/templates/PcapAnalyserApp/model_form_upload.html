@@ -2,21 +2,17 @@
 {% load static %}
 {% block content %}
 
+  
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Upload</button>
+    <button class="btn btn-success" type="submit" >Upload</button>
   </form>
-<br>
-<br>
-<br>
 
-  <a class="btn-get-started" href="{% url 'index' %}" >Home</a>
 
-<section>
-  <span class="img-container  element"> <!-- Inline parent element -->
-    <img src="{% static 'PcapAnalyserApp/assets/img/cyber-attack.png' %}">
-  </span>
-
-</section>
+  <a href="{% url 'packet-details' %}">
+    <button type="button" class="btn btn-info">
+      Analyze
+    </button>
+  </a>
 {% endblock %}
