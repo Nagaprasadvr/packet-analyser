@@ -144,9 +144,6 @@ print(d['time'][1])
 
 
 def plotTimevsNum(n):
-    
-   
-
     fig = px.line(d[['time','packetno']],range_y=[d['time'].min(),d['time'].max()])
     fig.write_html(f"./templates/PcapAnalyserApp/plot{n}.html")
     global j
