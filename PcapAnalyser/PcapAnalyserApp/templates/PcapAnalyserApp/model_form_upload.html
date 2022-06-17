@@ -1,0 +1,18 @@
+{% extends 'PcapAnalyserApp/base.html' %}
+{% load static %}
+{% block content %}
+
+  
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-success" type="submit" >Upload</button>
+  </form>
+
+
+  <a href="{% url 'packet-details' %}">
+    <button type="button" class="btn btn-info">
+      Analyze
+    </button>
+  </a>
+{% endblock %}
