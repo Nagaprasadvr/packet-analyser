@@ -22,6 +22,7 @@ from scapy.layers.inet import TCP, UDP
 import argparse
 from scapy.all import *
 import random
+from . import PcapInterpreter as pint
 # Create your view here.
 
 
@@ -141,7 +142,7 @@ def analyze(request,id):
     #mytrace,err = traceroute(["www.google.com"])
     #mytrace.graph(target=">trace.svg")
     with open('filename.txt', 'w') as f:
-        print("hello",file=f)
+        print("-----------------------------------Packets-Summary--------------------------------------------")
         GetHexData(p1,f)
         buildDframe(cap,f)
         print(l, file=f)
@@ -150,8 +151,52 @@ def analyze(request,id):
     f.close()
     return HttpResponse(file_content, content_type="text/plain")
 
-def analyse_from_source():
-    file1 = "media/SSHv2.cap"
+def test(request):
+    file1 = "media/documents/SSHv2.cap"
+    # file1 = '/home/rohith/Desktop/ciscoproject/PcapAnalyser/media/'+str(ref.document)
+    # file1 = "./pcaps/SSHv2.cap"
+    # /home/rohith/Desktop/ciscoproject/PcapAnalyser/media/documents/SSHv2.cap
+    print(file1)
+    cap = rdpcap(file1)
+    l = pint.getSSHdata(cap)
+
+    p1 = cap[0]
+    #p1.pdfdump("./first.pdf",layer_shift=1)
+    #mytrace,err = traceroute(["www.google.com"])
+    #mytrace.graph(target=">trace.svg")
+    f = None
+    hexdata = []
+    for i in cap:
+         hexdata.append(pint.GetHexData(i))
+
+   
+    df = pint.buildDframe(cap)
+    appdata = pint.getSSHdata(cap)
+    pkt = []
+    packets = {}
+    #print(df[['src', 'dst', 'sport', 'dport']])
+    #print(df[['len','packetno']])
+    #print(df[['time','packetno']])
+    for i in df.itertuples():
+        pkt.append(i)
+    
+    names = df.columns.values.tolist()
+    names.insert(0,'Packet no ')
+    #print(type(pkt[0][5]))
+    for i in range(len(pkt)):
+        pkt[i] = zip(names,pkt[i])
+    print(pkt[0])
+    l = df[['packetno','time','src','dst','sport','dport','len',]].values.tolist()
+    #print(l)
+    print(names)
+    i = 0
+    data = {"appdata":appdata,"packets":pkt,"pktfields":names,"frames":l}
+    return render(request,"PcapAnalyserApp/test.html",data)
+    
+
+
+def analyse_from_source(request):
+    file1 = "media/documents/SSHv2.cap"
    # file1 = '/home/rohith/Desktop/ciscoproject/PcapAnalyser/media/'+str(ref.document)
     # file1 = "./pcaps/SSHv2.cap"
     # /home/rohith/Desktop/ciscoproject/PcapAnalyser/media/documents/SSHv2.cap

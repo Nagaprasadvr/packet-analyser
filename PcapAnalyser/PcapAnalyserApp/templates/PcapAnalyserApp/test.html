@@ -1,0 +1,80 @@
+{% extends 'PcapAnalyserApp/index.html' %}
+{% load k %}
+                   
+{% block content %}
+<div>
+
+
+</div>
+<h1 style="color:teal;"><b>Packet Summary </b></h1>
+<div >
+    <table style="color:teal; height: 100%;"class="table col-md-6">
+        <thead>
+          <tr>
+            <th scope="col">Packet Number</th>
+            <th scope="col">Time</th>
+
+            <th scope="col">Source IP</th>
+            <th scope="col">Destination IP</th>
+            <th scope="col">Source Port</th>
+            <th scope="col">Destination Port</th>
+            <th scope="col">Packet Length</th>
+
+           
+          </tr>
+        </thead>
+        <tbody>   
+    
+
+    {% for m in frames %}
+    <td scope="col"><b>{{ m|index:"0" }}</b></td>
+    <td scope="col"><b>{{ m|index:"1" }}</b></td>
+    <td scope="col"><b>{{ m|index:"2" }}</b></td>
+    <td scope="col"><b>{{ m|index:"3" }}</b></td>
+    <td scope="col"><b>{{ m|index:"4" }}</b></td>
+    <td scope="col"><b>{{ m|index:"5" }}</b></td>
+    <td scope="col"><b>{{ m|index:"6" }}</b></td>
+
+        
+        {% comment %} {% for j in k %}
+        <tr>
+            <td><b>{{ j }}</b></td>
+        </tr>
+        {% endfor %}  {% endcomment %}
+     
+    </tbody>
+
+    {% endfor %}
+
+</table>
+
+    <h1 style="color:teal;"><b>In depth Packet details  </b></h1>
+    {% for i in packets %}
+   
+
+        <table style="color:teal; height: 100%;"class="table col-md-6">
+            <thead>
+              <tr>
+                <th scope="col">Field names</th>
+                <th scope="col">Values</th>
+               
+              </tr>
+            </thead>
+            <tbody>
+                {% for j,k in i %}
+                <tr>
+                    <td><b>{{ j }}</b></td>
+                    <td><b>{{ k }}</b></td>
+                  </tr>
+                {% endfor %} 
+             
+            </tbody>
+          </table>
+        <br>
+        <br>
+        <br>
+        
+    {% endfor %}
+    
+    </div>
+{% endblock %}

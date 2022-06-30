@@ -48,7 +48,7 @@
 
 <body>
   
-  <div class="wrap">
+  <div>
      <!-- ======= Header ======= -->
      <header id="header" class="d-flex align-items-center">
       <div class="container d-flex align-items-center justify-content-between">
@@ -91,6 +91,11 @@
     {% block content %}
 
     {% endblock %}
+    <section>
+      <span class="img-container  element"> <!-- Inline parent element -->
+        <img src="{% static 'PcapAnalyserApp/assets/img/cyber-attack.png' %}">
+      </span>
+    </section>
     <!-- ======= Hero Section ======= -->
    <!-- End Hero -->
     </div>

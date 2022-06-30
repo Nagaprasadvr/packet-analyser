@@ -20,7 +20,7 @@ def GetHexData(frame):
     hexstr = str(hexpac).strip("b")
     hexstr = hexstr.strip("'")
 
-    print(hexstr)
+    #print(hexstr)
     return hexstr
 
 def printMac(mac:str):
@@ -28,7 +28,7 @@ def printMac(mac:str):
         print(mac[i],end="")
         print(mac[i+1],end="")
         print(":",end="")
-    print()
+    #print()
 
 
 
@@ -80,15 +80,15 @@ def buildDframe(cap):
     df = df.reset_index()
     # Drop old index column
     df = df.drop(columns="index")
-    print(df.iloc[1])
+    #print(df.iloc[1])
 
-    print(df.shape)
+    #print(df.shape)
 
-    print(df[['src', 'dst', 'sport', 'dport']])
-    print(df[['len','packetno']])
-    print(df[['time','packetno']])
+    #print(df[['src', 'dst', 'sport', 'dport']])
+    #print(df[['len','packetno']])
+    #print(df[['time','packetno']])
 
-    print(df[6:7]['len'])
+    #print(df[6:7]['len'])
     return df
 
 

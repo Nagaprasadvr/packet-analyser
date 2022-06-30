@@ -13,32 +13,31 @@ import random
 file1 = "./pcaps/SSHv2.cap"
 
 cap = rdpcap(file1)
-appdata = []
-for i in range(len(cap)):
-    tmp = " "
-    frame = cap[i]
-    pkt = frame.payload
-    segment = pkt.payload
-    ap = segment.payload
-    apd = bytes(ap)
+# appdata = []
+# for i in range(len(cap)):
+#     tmp = " "
+#     frame = cap[i]
+#     pkt = frame.payload
+#     segment = pkt.payload
+#     ap = segment.payload
+#     apd = bytes(ap)
 
-    if len(apd) > 60:
-        apd = str(apd[2:])
-        count = 0
-        for j in apd:
-            if j.isalnum() and j!="x" and j!="0":
-                tmp = tmp+j
-            else:
+#     if len(apd) > 60:
+#         apd = str(apd[2:])
+#         count = 0
+#         for j in apd:
+#             if j.isalnum() and j!="x" and j!="0":
+#                 tmp = tmp+j
+#             else:
 
-                tmp = tmp+"-"
+#                 tmp = tmp+"-"
 
-            tmp.strip("'")
-            tmp.strip("b")
-            tmp.lstrip("-")
-            tmp.rstrip("-")
-        appdata.append(tmp)
+#             tmp.strip("'")
+#             tmp.strip("b")
+#             tmp.lstrip("-")
+#             tmp.rstrip("-")
+#         appdata.append(tmp)
 
-<<<<<<< HEAD
 # print(p.conversations(type="jpg", target="> test.jpg"))
 # p[0].pdfdump(layer_shift=1)
 # p[0].psdump("/tmp/isakmp_pkt.eps",layer_shift=1)
@@ -47,6 +46,7 @@ for i in range(len(cap)):
 # mytrace.trace3D()
 # a[0].pdfdump(layer_shift=1)
 # a[0].psdump("./isakmp_pkt.jpeg",layer_shift=1)
-a.make_table()
-=======
->>>>>>> 12fdd058ef5739c112b285a6031de0b7834479b1
+a=cap[0]
+a.show()
+hexdump(cap)
+
