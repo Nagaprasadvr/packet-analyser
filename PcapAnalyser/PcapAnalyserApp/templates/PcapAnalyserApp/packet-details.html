@@ -1,15 +1,15 @@
 {% extends 'PcapAnalyserApp/base.html' %}
 {% load static %}
 {% block content %}
-
+<div class="text-center">
   <h2>Packet Summary</h2>
+  {% comment %} <p>{% lorem 1 b random %}</p>
   <p>{% lorem 1 b random %}</p>
   <p>{% lorem 1 b random %}</p>
-  <p>{% lorem 1 b random %}</p>
-  <p>{% lorem 1 b random %}</p>
+  <p>{% lorem 1 b random %}</p> {% endcomment %}
 
   <h3>Plots Generated</h3>
-
+  <div>{{content|safe}}</div>
   <a href="{% url 'packetno-size' %}">
     <button type="button" class="btn btn-info">
       Packet Size vs Packet No.
@@ -20,4 +20,10 @@
       Packet Time vs Packet No.
     </button>
   </a>
+  <a href="{% url 'ps' %}">
+    <button type="button" class="btn btn-info">  
+      Packet structure
+    </button>
+  </a>
+</div>
 {% endblock %}

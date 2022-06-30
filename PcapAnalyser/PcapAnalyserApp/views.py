@@ -5,6 +5,7 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
 from httplib2 import Response
+from PcapAnalyser.settings import STATIC_URL
 from .models import Document
 from .forms import DocumentForm
 from django.contrib import messages
@@ -20,8 +21,10 @@ from scapy.layers.inet import TCP, UDP
 import argparse
 from scapy.all import *
 import random
-# Create your view here.
+from django.templatetags.static import static
 
+# Create your view here.
+absolute_path="/home/rohith/Desktop/ciscoproject/PcapAnalyser/PcapAnalyserApp/templates/PcapAnalyserApp"
 
 def index(request):
     return render(request, "PcapAnalyserApp/base.html")
@@ -29,21 +32,15 @@ def index(request):
 def packet_details(request):
     return render(request, "PcapAnalyserApp/packet-details.html")    
 
+def packet_structure(request):
+    return render(request, "PcapAnalyserApp/ps.html")
+
 def packetno_size(request):
-    return render(request, "PcapAnalyserApp/plot0.html")
+    return render(request,"PcapAnalyserApp/plot1.html")
 
 
 def packetno_time(request):
-    return render(request, "PcapAnalyserApp/plot1.html")    
-      
-
-def size_vs_no(request):
-    file1 = "/home/rishu/Projects/cisco_project_packet_analysis/PcapAnalyser/media/documents/SSHv2.cap"
-    caps = rdpcap(file1)
-    # for cap in caps:
-    print(len(caps))
-
-    return render(request, "PcapAnalyserApp/base.html")
+    return render(request,"PcapAnalyserApp/plot2.html")    
 
 def GetHexData(frame,f):
     hexpac = binascii.hexlify(bytes(frame))
@@ -110,6 +107,15 @@ def buildDframe(cap,f):
     print(df[6:7]['len'],file=f)
     return df
 
+def plotSizevsNum(d):
+    fig = px.line(d[['len','packetno']],x='packetno',y='len',title="Packet size vs Packet number")
+    fig.write_html(absolute_path+"/plot1.html")
+
+
+def plotTimevsNum(d):
+    fig = px.line(d[['time','packetno']],range_y=[d['time'].min(),d['time'].max()])
+    fig.write_html(absolute_path+"/plot2.html")
+
 def analyze(request,id):
     ref=Document.objects.get(id=id)
     file1 = '/home/rohith/Desktop/ciscoproject/PcapAnalyser/media/'+str(ref.document)
@@ -118,17 +124,19 @@ def analyze(request,id):
     print(file1)
     cap = rdpcap(file1)
     p1 = cap[0]
-    p1.pdfdump("./first.pdf",layer_shift=1)
-    mytrace,err = traceroute(["www.google.com"])
-    mytrace.graph(target=">trace.svg")
+    p1.pdfdump("/home/rohith/Desktop/ciscoproject/PcapAnalyser/PcapAnalyserApp/static/ps.pdf",layer_shift=1)
+    # mytrace,err = traceroute(["www.google.com"])
+    # mytrace.graph(target=">trace.svg")
     with open('filename.txt', 'w') as f:
         print("hello",file=f)
         GetHexData(p1,f)
-        buildDframe(cap,f)
+        d=buildDframe(cap,f)
+    plotSizevsNum(d)
+    plotTimevsNum(d)
     f = open('filename.txt', 'r')
     file_content = f.read()
     f.close()
-    return HttpResponse(file_content, content_type="text/plain")
+    return redirect('packet-details')
 
 
 def model_form_upload(request):

@@ -1,4 +1,3 @@
-# this is the python script to interpret pcap files
 import binascii
 import sys
 import plotly.express as px
@@ -84,7 +83,7 @@ def buildDframe():
     df = df.reset_index()
     # Drop old index column
     df = df.drop(columns="index")
-    print(df.iloc[1])
+
 
     print(df.shape)
 
