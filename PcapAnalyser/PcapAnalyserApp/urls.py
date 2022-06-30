@@ -7,5 +7,5 @@ urlpatterns = [
     path('packet-details/', views.packet_details, name="packet-details"),
     path('packetno-size/', views.packetno_size,name="packetno-size"),
     path('packetno-time/', views.packetno_time,name="packetno-time"),
-    path('generate-plots/', views.Temp, name="temp"),
+    path('analyze/<int:id>', views.analyze, name="analyze"),
 ]
