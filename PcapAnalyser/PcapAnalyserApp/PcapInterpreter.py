@@ -11,8 +11,7 @@ from scapy.layers.inet import TCP, UDP
 import argparse
 from scapy.all import *
 import random
-
-
+from matplotlib import pyplot as plt 
 
 
 def GetHexData(frame):
@@ -119,7 +118,10 @@ def getSSHdata(cap):
             appdata.append(tmp)
 
     return appdata
+dir = os.path.dirname(os.path.abspath(__file__))
+parent = os.path.dirname(os.path.abspath(dir))
 
+file = os.path.join(parent,'media/documents')
 
 
 def plotSizevsNum(d):
@@ -128,7 +130,7 @@ def plotSizevsNum(d):
     for _ in range(5):
         n = n+str(math.ceil((random.random())))
 
-    fig.write_html(f"./templates/PcapAnalyserApp/plot{n}.html")
+    fig.write_html(f"{file}/plot{n}.html")
 
 
 def plotTimevsNum(d):
@@ -136,4 +138,5 @@ def plotTimevsNum(d):
     n = ""
     for _ in range(5):
         n = n + str(math.ceil((random.random())))
-    fig.write_html(f"./templates/PcapAnalyserApp/plot{n}.html")
+    fig.write_html(f"{file}/plot{n}.html")
+
