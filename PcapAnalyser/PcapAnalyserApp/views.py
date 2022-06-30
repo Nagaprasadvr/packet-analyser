@@ -252,4 +252,4 @@ def model_form_upload(request):
             # return Response({}, status=statu)
     else:
         form = DocumentForm()
-        return render(request, 'PcapAnalyserApp/model_form_upload.html', {'form': form,"id":a.id })
+        return render(request, 'PcapAnalyserApp/model_form_upload.html', {'form': form})
