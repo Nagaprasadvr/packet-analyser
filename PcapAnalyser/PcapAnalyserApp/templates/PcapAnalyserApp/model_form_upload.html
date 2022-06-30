@@ -3,16 +3,33 @@
 {% block content %}
 
   
-  <form method="post" enctype="multipart/form-data">
+  <form align="center" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <button class="btn btn-success" type="submit" >Upload</button>
+    <button align="center" class="btn btn-success" type="submit" >Upload</button>
   </form>
 
+  <br>
+  <br>
 
-  <a href="{% url 'packet-details' %}">
-    <button type="button" class="btn btn-info">
+  <div align="center">
+  <a  align="center" href="{% url 'packet-details' %}">
+    <button align="center" type="button" class="btn btn-info">
       Analyze
     </button>
+
   </a>
+  <br>
+  <br>
+</div>
+<div align="center">
+  <a  align="center" href="{% url 'analyse_from_source' %}">
+    <button align="center" type="button" class="btn btn-info">
+      Analyze from Sources
+    </button>
+
+  </a>
+  <br>
+  <br>
+</div>
 {% endblock %}

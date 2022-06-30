@@ -150,6 +150,30 @@ def analyze(request,id):
     f.close()
     return HttpResponse(file_content, content_type="text/plain")
 
+def analyse_from_source():
+    file1 = "media/SSHv2.cap"
+   # file1 = '/home/rohith/Desktop/ciscoproject/PcapAnalyser/media/'+str(ref.document)
+    # file1 = "./pcaps/SSHv2.cap"
+    # /home/rohith/Desktop/ciscoproject/PcapAnalyser/media/documents/SSHv2.cap
+    print(file1)
+    cap = rdpcap(file1)
+    l = getSSHdata(cap)
+
+    p1 = cap[0]
+    #p1.pdfdump("./first.pdf",layer_shift=1)
+    #mytrace,err = traceroute(["www.google.com"])
+    #mytrace.graph(target=">trace.svg")
+    with open('filename.txt', 'w') as f:
+        print("hello",file=f)
+        GetHexData(p1,f)
+        buildDframe(cap,f)
+        print(l, file=f)
+    f = open('filename.txt', 'r')
+    file_content = f.read()
+    f.close()
+    return HttpResponse(file_content, content_type="text/plain")
+
+
 
 def model_form_upload(request):
     if request.method == 'POST':
