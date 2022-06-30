@@ -1,5 +1,44 @@
 hello
 c20269490000c20169490000080045c0002c020f0000ff06a4fa0a0000010a000002e7030016dbb5146e00000000600210209cc60000020405b40000
+
+
+--------------------Packet - 0--------------------------
+version                        4
+ihl                            5
+tos                          192
+len                           44
+id                           527
+flags                           
+frag                           0
+ttl                          255
+proto                          6
+chksum                     42234
+src                     10.0.0.1
+dst                     10.0.0.2
+options                        0
+time           1213964540.267709
+sport                      59139
+dport                         22
+seq                   3686077550
+ack                            0
+dataofs                        6
+reserved                       0
+flags                          S
+window                      4128
+chksum                     40134
+urgptr                         0
+options                        1
+payload                        2
+payload_raw          b'\x00\x00'
+payload_hex              b'0000'
+packetno                       0
+Name: 0, dtype: object
+--------------------------------------------------------
+
+
+
+
+--------------------Packet - 1--------------------------
 version                        4
 ihl                            5
 tos                          192
@@ -30,47 +69,337 @@ payload_raw          b'\x00\x00'
 payload_hex              b'0000'
 packetno                       1
 Name: 1, dtype: object
-         src       dst  sport  dport
-0   10.0.0.1  10.0.0.2  59139     22
-1   10.0.0.2  10.0.0.1     22  59139
-2   10.0.0.1  10.0.0.2  59139     22
-3   10.0.0.2  10.0.0.1     22  59139
-4   10.0.0.1  10.0.0.2  59139     22
-..       ...       ...    ...    ...
-85  10.0.0.2  10.0.0.1     22  59139
-86  10.0.0.1  10.0.0.2  59139     22
-87  10.0.0.2  10.0.0.1     22  59139
-88  10.0.0.1  10.0.0.2  59139     22
-89  10.0.0.1  10.0.0.2  59139     22
+--------------------------------------------------------
 
-[90 rows x 4 columns]
+
+
+
+--------------------Packet - 2--------------------------
+version                                  4
+ihl                                      5
+tos                                    192
+len                                     40
+id                                     528
+flags                                     
+frag                                     0
+ttl                                    255
+proto                                    6
+chksum                               42237
+src                               10.0.0.1
+dst                               10.0.0.2
+options                                  0
+time                     1213964540.283710
+sport                                59139
+dport                                   22
+seq                             3686077551
+ack                             2660600825
+dataofs                                  5
+reserved                                 0
+flags                                    A
+window                                4128
+chksum                               35300
+urgptr                                   0
+options                               None
+payload                                  6
+payload_raw    b'\x00\x00\x00\x00\x00\x00'
+payload_hex                b'000000000000'
+packetno                                 2
+Name: 2, dtype: object
+--------------------------------------------------------
+
+
+
+
+--------------------Packet - 3--------------------------
+version                                                4
+ihl                                                    5
+tos                                                  192
+len                                                   59
+id                                                 58114
+flags                                                   
+frag                                                   0
+ttl                                                  255
+proto                                                  6
+chksum                                             50167
+src                                             10.0.0.2
+dst                                             10.0.0.1
+options                                                0
+time                                   1213964540.292082
+sport                                                 22
+dport                                              59139
+seq                                           2660600825
+ack                                           3686077551
+dataofs                                                5
+reserved                                               0
+flags                                                 PA
+window                                              4128
+chksum                                             63631
+urgptr                                                 0
+options                                                0
+payload                                               19
+payload_raw                      b'SSH-2.0-Cisco-1.25\n'
+payload_hex    b'5353482d322e302d436973636f2d312e32350a'
+packetno                                               3
+Name: 3, dtype: object
+--------------------------------------------------------
+
+
+
+
+--------------------Packet - 4--------------------------
+version                                                  4
+ihl                                                      5
+tos                                                    192
+len                                                     60
+id                                                     529
+flags                                                     
+frag                                                     0
+ttl                                                    255
+proto                                                    6
+chksum                                               42216
+src                                               10.0.0.1
+dst                                               10.0.0.2
+options                                                  0
+time                                     1213964540.331713
+sport                                                59139
+dport                                                   22
+seq                                             3686077551
+ack                                             2660600844
+dataofs                                                  5
+reserved                                                 0
+flags                                                   PA
+window                                                4109
+chksum                                               63820
+urgptr                                                   0
+options                                                  0
+payload                                                 20
+payload_raw                       b'SSH-1.99-Cisco-1.25\n'
+payload_hex    b'5353482d312e39392d436973636f2d312e32350a'
+packetno                                                 4
+Name: 4, dtype: object
+--------------------------------------------------------
+
+
+
+
+--------------------Packet - 5--------------------------
+version                                                        4
+ihl                                                            5
+tos                                                          192
+len                                                          104
+id                                                           530
+flags                                                           
+frag                                                           0
+ttl                                                          255
+proto                                                          6
+chksum                                                     42171
+src                                                     10.0.0.1
+dst                                                     10.0.0.2
+options                                                        0
+time                                           1213964540.339711
+sport                                                      59139
+dport                                                         22
+seq                                                   3686077571
+ack                                                   2660600844
+dataofs                                                        5
+reserved                                                       0
+flags                                                          A
+window                                                      4109
+chksum                                                     45414
+urgptr                                                         0
+options                                                        0
+payload                                                       64
+payload_raw    b'\x00\x00\x01\x14\x04\x14\xf3\xca\xd2\x90\xec...
+payload_hex    b'000001140414f3cad290ecf47c47554c88cf3a722bb2...
+packetno                                                       5
+Name: 5, dtype: object
+--------------------------------------------------------
+
+
+
+
+--------------------Packet - 6--------------------------
+version                                                        4
+ihl                                                            5
+tos                                                          192
+len                                                          320
+id                                                         58115
+flags                                                           
+frag                                                           0
+ttl                                                          255
+proto                                                          6
+chksum                                                     49905
+src                                                     10.0.0.2
+dst                                                     10.0.0.1
+options                                                        0
+time                                           1213964540.347724
+sport                                                         22
+dport                                                      59139
+seq                                                   2660600844
+ack                                                   3686077635
+dataofs                                                        5
+reserved                                                       0
+flags                                                         PA
+window                                                      4044
+chksum                                                      8400
+urgptr                                                         0
+options                                                        0
+payload                                                      280
+payload_raw    b'\x00\x00\x01\x14\x04\x14\xeb;;}T\x14F[A\xc0\...
+payload_hex    b'000001140414eb3b3b7d5414465b41c0b8c4fd13aa25...
+packetno                                                       6
+Name: 6, dtype: object
+--------------------------------------------------------
+
+
+
+
+--------------------Packet - 7--------------------------
+version                                                        4
+ihl                                                            5
+tos                                                          192
+len                                                          104
+id                                                           531
+flags                                                           
+frag                                                           0
+ttl                                                          255
+proto                                                          6
+chksum                                                     42170
+src                                                     10.0.0.1
+dst                                                     10.0.0.2
+options                                                        0
+time                                           1213964540.347726
+sport                                                      59139
+dport                                                         22
+seq                                                   3686077635
+ack                                                   2660600844
+dataofs                                                        5
+reserved                                                       0
+flags                                                          A
+window                                                      4109
+chksum                                                     45580
+urgptr                                                         0
+options                                                        0
+payload                                                       64
+payload_raw    b'\x00\x00)aes128-cbc,3des-cbc,aes192-cbc,aes2...
+payload_hex    b'0000296165733132382d6362632c336465732d636263...
+packetno                                                       7
+Name: 7, dtype: object
+--------------------------------------------------------
+
+
+
+
+--------------------Packet - 8--------------------------
+version                                                        4
+ihl                                                            5
+tos                                                          192
+len                                                          104
+id                                                           532
+flags                                                           
+frag                                                           0
+ttl                                                          255
+proto                                                          6
+chksum                                                     42169
+src                                                     10.0.0.1
+dst                                                     10.0.0.2
+options                                                        0
+time                                           1213964540.355715
+sport                                                      59139
+dport                                                         22
+seq                                                   3686077699
+ack                                                   2660600844
+dataofs                                                        5
+reserved                                                       0
+flags                                                          A
+window                                                      4109
+chksum                                                     27028
+urgptr                                                         0
+options                                                        0
+payload                                                       64
+payload_raw    b'cbc,aes192-cbc,aes256-cbc\x00\x00\x00+hmac-s...
+payload_hex    b'6362632c6165733139322d6362632c6165733235362d...
+packetno                                                       8
+Name: 8, dtype: object
+--------------------------------------------------------
+
+
+
+
+--------------------Packet - 9--------------------------
+version                                                        4
+ihl                                                            5
+tos                                                          192
+len                                                          104
+id                                                           533
+flags                                                           
+frag                                                           0
+ttl                                                          255
+proto                                                          6
+chksum                                                     42168
+src                                                     10.0.0.1
+dst                                                     10.0.0.2
+options                                                        0
+time                                           1213964540.363714
+sport                                                      59139
+dport                                                         22
+seq                                                   3686077763
+ack                                                   2660600844
+dataofs                                                        5
+reserved                                                       0
+flags                                                          A
+window                                                      4109
+chksum                                                     47044
+urgptr                                                         0
+options                                                        0
+payload                                                       64
+payload_raw    b'c-md5-96\x00\x00\x00+hmac-sha1,hmac-sha1-96,...
+payload_hex    b'632d6d64352d39360000002b686d61632d736861312c...
+packetno                                                       9
+Name: 9, dtype: object
+--------------------------------------------------------
+
+
+        src       dst  sport  dport
+0  10.0.0.1  10.0.0.2  59139     22
+1  10.0.0.2  10.0.0.1     22  59139
+2  10.0.0.1  10.0.0.2  59139     22
+3  10.0.0.2  10.0.0.1     22  59139
+4  10.0.0.1  10.0.0.2  59139     22
+5  10.0.0.1  10.0.0.2  59139     22
+6  10.0.0.2  10.0.0.1     22  59139
+7  10.0.0.1  10.0.0.2  59139     22
+8  10.0.0.1  10.0.0.2  59139     22
+9  10.0.0.1  10.0.0.2  59139     22
+-------------------------------------------
+
+
    len packetno
 0   44        0
 1   44        1
 2   40        2
 3   59        3
 4   60        4
-..  ..      ...
-85  40       85
-86  40       86
-87  40       87
-88  40       88
-89  40       89
+5  104        5
+6  320        6
+7  104        7
+8  104        8
+9  104        9
+-------------------------------------------
 
-[90 rows x 2 columns]
-                 time packetno
-0   1213964540.267709        0
-1   1213964540.275729        1
-2   1213964540.283710        2
-3   1213964540.292082        3
-4   1213964540.331713        4
-..                ...      ...
-85  1213964547.204148       85
-86  1213964547.204149       86
-87  1213964547.212153       87
-88  1213964547.212156       88
-89  1213964547.220119       89
 
-[90 rows x 2 columns]
-6    320
-Name: len, dtype: object
+                time packetno
+0  1213964540.267709        0
+1  1213964540.275729        1
+2  1213964540.283710        2
+3  1213964540.292082        3
+4  1213964540.331713        4
+5  1213964540.339711        5
+6  1213964540.347724        6
+7  1213964540.347726        7
+8  1213964540.355715        8
+9  1213964540.363714        9
+-------------------------------------------
+
+
+['b----1--14---4--14--eb---T--14F-A--c---b8--c4--fd--13--aa---------------1adiffie-hellman-group1-sha1---------------7ssh-rsa-------------aes128-cbc-3des-cbc-aes192-cbc-aes256-cbc-------------aes128-cbc-3des-cbc-aes192-cbc-aes256-cbc-------------hmac-sha1-hmac-sha1-96-hmac-md5-hmac-md5-96-------------hmac-sha1-hmac-sha1-96-hmac-md5-hmac-md5-96---------------4none---------------4none---------------------------------------------------------------------', 'b----1----8--1f------------W---------------7ssh-rsa---------------3---1-------1------------A------9d--ba--81--ad--e2--d-T1---b9d---be--e9--cd--1eF-D--bek---c--b----96---11--a---ea-J3--87--f4T--ab--d2--96--a2--a3--98-t--b2--d3--e5o--88--8b--8b---7j--95--c-9--f84--d1-----bb---b--9e--8f--------------8---16--8e--9e--89w--a9-j--d8--ebQ--ffm-r--e---83--fa--d9s--dc--beu--e9kKO--d6--e1K--ed--8c--cec--cb---ba--d3--9e6--Id--b5--aet--88--f4--86q--99---bP--c----97--b4r--d8--ba--15--d--c9--e6--d6---a----4--8aA-------a5--1e--d9--99---ab--e5b---5D--bf--f2--f-ry--a4---a9--d3----1--8fB---17--99--ae--1a--f1-R--81T--1a--7f---e6Q--8b--a4--d---e7--91ld---2--1-hS--d4--a7--18--baU------------O---------------7ssh-rsa-------------UtY--96c--84--1e---ff--1---95---fcUM---e1--a1---7--c7--88--af--98m--Dy--d5---29--f---c5-T--ca--a8--88---6C--a6--b-fYd--e6--bf--ed-1--c5C--8a-WXT--db------b6--85--15-3---------------------------------', 'b---8d--12--88--8e--a3--1b--9f-n--fa--12O--db--8bXC--111--d99---f4--df--a5--eb---b--adS-r5f--de--a6--ab--ef----9aK--acfQd--a4--16V--b2--93--e8--a8--9b--f2--f---a-----7---3--a9---8--b7--a3V--e5--95n--1e--1d--81--b9I--d4--c1--95MBX--82--96--d7---e5t--8d--15--e4--14--82--a9--df--1f--a5--d2---1--aa---b7--bd--1b---cb----1-m--bd---e9J--9a--ecj--d9--bb29-WeK--b2----bc--f5--f5--12Zo---1--ab---c5--e1p--k--92--d9-----2--bd--c8--e3--a5---7f--b4--cff--e7--d4--8-b-b---d---f1--ec--e1--af--ccC-a--de--94--a6--9---d5y--a1---eeh---e--d1--a6--a7C---1----5--93--b---8f--edV--de--a4--cag--91--81--dc--17---5--f1--a2--bdq---8d---41K--171R--84c----c8--9b--b4--89--ce--b5X--91--ca--c8--abF--b-j--16--1cC--96--f5--c1TX-3yC--ad--12F--fbypy--b4--e7--c2--18---fe---b4X---7--b5--df--b5--c64--a3Q--8e--9---b3--b---b2---1--15--8f--bb--83---e3----bcV--16---c--bf--cdJ--edRO---1--b9--e8--a6--c7---f4--b5---a3V---5-P--d9--aewt--de-----f5--1eF----6--ab----8c--1b---b-Wj---3----18--d9--88--ed--96--86--cd---fa---f5--1f--15--171--ecPhZ--cb-B--c5--8cX-h--17--a87--cb--15V--f1----93--1b--c4--13--dd--93---b4--ad--cfT--b---d7--d1--a4---11u--d2--d1---1---7--84---3-t5Gj--c8--ecN--9---e-C---c-6-L---8---c3--14--9c--82aX--82I---dbF--14--c8--8b--9e--d1I--b---a7-v---4y--8---ec1--e1--df--efr---adKj--d2--c7--f2z---8--d7--7f--8--VH--1eqP--dcs--ec--c1Q--91r---a6--d6-r-e--e4X2--a4--ccp-n--14j--ff--ed---7fz-U---cdUJ--fd----fb--af--af---5--ff--acB--c9--1eQUrH-', 'b---eb--9ci--e3--8d--f8n----b8--a7--dfc--a6--9bfC--d6--af--e9--e3---5--ff--ed---ec---ae--c9--bd1--f6--ab--8e--9c--ac--b4--fa---a1--83p--cd--d3--b9--97--ad--ab--d6c4--bc--1e---a----2--e---d5--fd--9bKqF5--b4--ebg--dc--d-e---7--8f--85--f3--b--N--e2----c--bb--16---d1t------a6---6----2--8f---c4--ea--1cW--b7--9d---d2---b5--b7---8g--ed-o--e7--b1--8b---16--d3--9bbn--f4-j--e9--82--af--1d--1e--89--e4--b5-r--14---1--7fq---85--d2--87KC-ht--8d--ca--1e--b8--fcafT--d73n---a3--t--9f--89U--81--cc--ffcIi---7--f3--a1f--ac---b---8c--89--17---f3--e1--a7--bcR--a2---4X--d5----6--be--9a--b7--97---bd--9c----4--99---af--a---18E--cb--c4a--c9--b----c5-']

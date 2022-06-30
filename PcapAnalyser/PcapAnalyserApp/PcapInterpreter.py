@@ -12,9 +12,7 @@ import argparse
 from scapy.all import *
 import random
 
-file1 = "./pcaps/SSHv2.cap"
-cap = rdpcap(file1)
-p1 = cap[0]
+
 
 
 def GetHexData(frame):
@@ -32,12 +30,10 @@ def printMac(mac:str):
         print(":",end="")
     print()
 
-hex = GetHexData(p1)
-
-print(len(cap[0]))
 
 
-def buildDframe():
+
+def buildDframe(cap):
     ip_fields = [field.name for field in IP().fields_desc]
     tcp_fields = [field.name for field in TCP().fields_desc]
     udp_fields = [field.name for field in UDP().fields_desc]
@@ -95,57 +91,49 @@ def buildDframe():
     print(df[6:7]['len'])
     return df
 
-d = buildDframe()
 
-frame = cap[6]
-pkt = frame.payload
-segment = pkt.payload
-ap = segment.payload
-ap = bytes(ap)
-#h1 = GetHexData(ap)
-#print(IP().fields_desc)
-#print(pkt.fields['src'])
-def getSSHdata(apd):
-    string = ""
+def getSSHdata(cap):
+    appdata = []
+    for f in cap:
+        frame = f
+        pkt = frame.payload
+        segment = pkt.payload
+        ap = segment.payload
+        apd = bytes(ap)
+        if len(apd)>=100 and len(apd)<=500:
 
-    tmp = ""
-    for j in range(len(apd)-1):
-        if apd[j:j+1].isalnum() :
-            tmp = str(apd[j:j+1])
-            tmp = tmp.strip("'")
-            tmp = tmp.strip("b")
-            tmp = tmp.strip("'")
-            string = string+tmp
-        else:
-            string = string+"-"
+            apd = str(apd[2:])
+            count = 0
+            tmp = ""
+            for j in apd:
 
-    string.strip(" ")
-    return string
+                if j.isalnum() and j != "x" and j != "0":
+                    tmp = tmp + j
+                else:
+                    tmp = tmp + "-"
+
+                tmp.strip("'")
+                tmp.strip("b")
+                tmp.lstrip("-")
+                tmp.rstrip("-")
+            appdata.append(tmp)
+
+    return appdata
 
 
 
-
-print(ap)
-print("\n\n---------SSH DATA ------------\n\n")
-print(getSSHdata(apd=ap))
-j = 0
-def plotSizevsNum(n):
+def plotSizevsNum(d):
     fig = px.line(d[['len','packetno']],x='packetno',y='len',title="Packet size vs Packet number")
+    n = ""
+    for _ in range(5):
+        n = n+str(math.ceil((random.random())))
+
     fig.write_html(f"./templates/PcapAnalyserApp/plot{n}.html")
-    global j
-    j+=1
 
 
-
-            
-                
-plotSizevsNum(j)
-print(d['time'][1])
-
-
-def plotTimevsNum(n):
+def plotTimevsNum(d):
     fig = px.line(d[['time','packetno']],range_y=[d['time'].min(),d['time'].max()])
+    n = ""
+    for _ in range(5):
+        n = n + str(math.ceil((random.random())))
     fig.write_html(f"./templates/PcapAnalyserApp/plot{n}.html")
-    global j
-    j+=1
-plotTimevsNum(j)    

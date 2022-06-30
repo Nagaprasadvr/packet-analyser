@@ -9,11 +9,13 @@ from .models import Document
 from .forms import DocumentForm
 from django.contrib import messages
 import binascii
+from .PcapInterpreter import getSSHdata
 import sys
 import plotly.express as px
 import pandas as pd
 from struct import *
 import os
+from traceroute import traceroute
 from scapy.layers.l2 import Ether
 from scapy.layers.inet import IP
 from scapy.layers.inet import TCP, UDP
@@ -37,13 +39,15 @@ def packetno_time(request):
     return render(request, "PcapAnalyserApp/plot1.html")    
       
 
-def size_vs_no(request):
-    file1 = "/home/rishu/Projects/cisco_project_packet_analysis/PcapAnalyser/media/documents/SSHv2.cap"
-    caps = rdpcap(file1)
-    # for cap in caps:
-    print(len(caps))
+# def size_vs_no(request):
+#     dirt = os.path.abspath(__file__)
+#     file1 = os.path.join(dirt,"/media/documents/"+)
+#     #file1 = "/home/rishu/Projects/cisco_project_packet_analysis/PcapAnalyser/media/documents/SSHv2.cap"
+#     caps = rdpcap(file1)
+#     # for cap in caps:
+#     print(len(caps))
 
-    return render(request, "PcapAnalyserApp/base.html")
+    #return render(request, "PcapAnalyserApp/base.html")
 
 def GetHexData(frame,f):
     hexpac = binascii.hexlify(bytes(frame))
@@ -99,32 +103,48 @@ def buildDframe(cap,f):
     df = df.reset_index()
     # Drop old index column
     df = df.drop(columns="index")
-    print(df.iloc[1],file=f)
+    for i in range(10):
+        print("\n", file=f)
+        print(f"--------------------Packet - {i}--------------------------", file=f)
+        print(df.iloc[i],file=f)
+        print("--------------------------------------------------------", file=f)
+        print("\n", file=f)
 
-    print(df.shape)
+    #print(df.shape)
 
-    print(df[['src', 'dst', 'sport', 'dport']],file=f)
-    print(df[['len','packetno']],file=f)
-    print(df[['time','packetno']],file=f)
+    print(df[['src', 'dst', 'sport', 'dport']].head(10),file=f)
+    print("-------------------------------------------",file=f)
+    print("\n",file=f)
+    print(df[['len','packetno']].head(10),file=f)
+    print("-------------------------------------------", file=f)
+    print("\n", file=f)
+    print(df[['time','packetno']].head(10),file=f)
+    print("-------------------------------------------", file=f)
+    print("\n", file=f)
 
-    print(df[6:7]['len'],file=f)
+    #print(df[6:7]['len'],file=f)
     return df
 
 def analyze(request,id):
     ref=Document.objects.get(id=id)
-    file1 = '/home/rohith/Desktop/ciscoproject/PcapAnalyser/media/'+str(ref.document)
+
+    file1 = "media/"+str(ref.document)
+   # file1 = '/home/rohith/Desktop/ciscoproject/PcapAnalyser/media/'+str(ref.document)
     # file1 = "./pcaps/SSHv2.cap"
     # /home/rohith/Desktop/ciscoproject/PcapAnalyser/media/documents/SSHv2.cap
     print(file1)
     cap = rdpcap(file1)
+    l = getSSHdata(cap)
+
     p1 = cap[0]
-    p1.pdfdump("./first.pdf",layer_shift=1)
-    mytrace,err = traceroute(["www.google.com"])
-    mytrace.graph(target=">trace.svg")
+    #p1.pdfdump("./first.pdf",layer_shift=1)
+    #mytrace,err = traceroute(["www.google.com"])
+    #mytrace.graph(target=">trace.svg")
     with open('filename.txt', 'w') as f:
         print("hello",file=f)
         GetHexData(p1,f)
         buildDframe(cap,f)
+        print(l, file=f)
     f = open('filename.txt', 'r')
     file_content = f.read()
     f.close()
