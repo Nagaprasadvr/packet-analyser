@@ -1,5 +1,5 @@
-# this is the python script to interpret pcap files
 import binascii
+import plotly.graph_objs as go
 import sys
 import plotly.express as px
 import pandas as pd
@@ -11,7 +11,7 @@ from scapy.layers.inet import TCP, UDP
 import argparse
 from scapy.all import *
 import random
-from matplotlib import pyplot as plt 
+from matplotlib import pyplot as plt
 
 
 def GetHexData(frame):
@@ -79,7 +79,7 @@ def buildDframe(cap):
     df = df.reset_index()
     # Drop old index column
     df = df.drop(columns="index")
-    #print(df.iloc[1])
+
 
     #print(df.shape)
 
@@ -118,25 +118,9 @@ def getSSHdata(cap):
             appdata.append(tmp)
 
     return appdata
-dir = os.path.dirname(os.path.abspath(__file__))
-parent = os.path.dirname(os.path.abspath(dir))
+# dir = os.path.dirname(os.path.abspath(__file__))
+# parent = os.path.dirname(os.path.abspath(dir))
 
-file = os.path.join(parent,'media/documents')
-
-
-def plotSizevsNum(d):
-    fig = px.line(d[['len','packetno']],x='packetno',y='len',title="Packet size vs Packet number")
-    n = ""
-    for _ in range(5):
-        n = n+str(math.ceil((random.random())))
-
-    fig.write_html(f"{file}/plot{n}.html")
-
-
-def plotTimevsNum(d):
-    fig = px.line(d[['time','packetno']],range_y=[d['time'].min(),d['time'].max()])
-    n = ""
-    for _ in range(5):
-        n = n + str(math.ceil((random.random())))
-    fig.write_html(f"{file}/plot{n}.html")
-
+def pieChart(pno,plen):
+    fig = go.Figure(data=[go.Pie(labels=pno,values=plen)])
+    fig.show()

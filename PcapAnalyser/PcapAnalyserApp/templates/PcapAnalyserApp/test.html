@@ -50,7 +50,8 @@
         <thead>
           <tr>
             <th scope="col">Packet Number</th>
-              <th scope="col">Packet Length"</th>
+              <th scope="col">Packet Length</th>
+              <th scope="col">Application Layer Data </th>
 
           </tr>
         </thead>
@@ -60,6 +61,7 @@
     {% for m in len %}
     <td scope="col"><b>{{ m|index:"0" }}</b></td>
     <td scope="col"><b>{{ m|index:"1" }}</b></td>
+    <td scope="col"><b>{{ m|index:"2" }}</b></td>
 
     </tbody>
 

@@ -7,8 +7,9 @@ urlpatterns = [
     path('packet-details/', views.packet_details, name="packet-details"),
     path('packetno-size/', views.packetno_size,name="packetno-size"),
     path('packetno-time/', views.packetno_time,name="packetno-time"),
-    path('analyze/<int:id>', views.analyze, name="analyze"),
+    # path('analyze/<int:id>', views.analyze, name="analyze"),
     path('analyse-from-source',views.analyse_from_source, name="analyse_from_source"),
-    path('test/<int:id>', views.test ,name="test" )
+    path('test/<int:id>', views.test, name="test"),
 
+    path('analyze/ps', views.packet_structure, name="ps"),
 ]

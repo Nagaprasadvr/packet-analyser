@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import render, redirect
+from .PcapInterpreter import pieChart
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
@@ -23,133 +24,43 @@ import argparse
 from scapy.all import *
 import random
 from . import PcapInterpreter as pint
-# Create your view here.
+from django.templatetags.static import static
 
+# Create your view here.
+#absolute_path="/home/rohith/Desktop/ciscoproject/PcapAnalyser/PcapAnalyserApp/templates/PcapAnalyserApp"
 
 def index(request):
     return render(request, "PcapAnalyserApp/base.html")
 
+
 def packet_details(request):
     return render(request, "PcapAnalyserApp/packet-details.html")    
 
+
+def packet_structure(request):
+    return render(request, "PcapAnalyserApp/ps.html")
+
+
 def packetno_size(request):
-    return render(request, "PcapAnalyserApp/plot0.html")
+    return render(request,"PcapAnalyserApp/plot1.html")
 
 
-def packetno_time(request):
-    return render(request, "PcapAnalyserApp/plot1.html")    
-      
-
-# def size_vs_no(request):
-#     dirt = os.path.abspath(__file__)
-#     file1 = os.path.join(dirt,"/media/documents/"+)
-#     #file1 = "/home/rishu/Projects/cisco_project_packet_analysis/PcapAnalyser/media/documents/SSHv2.cap"
-#     caps = rdpcap(file1)
-#     # for cap in caps:
-#     print(len(caps))
 
     #return render(request, "PcapAnalyserApp/base.html")
+def packetno_time(request):
+    return render(request,"PcapAnalyserApp/plot2.html")
 
-def GetHexData(frame,f):
-    hexpac = binascii.hexlify(bytes(frame))
-    hexstr = str(hexpac).strip("b")
-    hexstr = hexstr.strip("'")
-    print(hexstr,file=f)
-    return (hexstr)
 
-def buildDframe(cap,f):
-    ip_fields = [field.name for field in IP().fields_desc]
-    tcp_fields = [field.name for field in TCP().fields_desc]
-    udp_fields = [field.name for field in UDP().fields_desc]
+def plotSizevsNum(d):
+    fig = px.line(d[['len','packetno']],x='packetno',y='len',title="Packet size vs Packet number")
+    fig.write_html("PcapAnalyserApp/templates/PcapAnalyserApp"+"/plot1.html")
 
-    dataframe_fields = ip_fields + ['time'] + tcp_fields + ['payload', 'payload_raw', 'payload_hex']+['packetno']
 
-    # Create blank DataFrame
-    df = pd.DataFrame(columns=dataframe_fields)
-    i = 0
-    for packet in cap[IP]:
-        # Field array for each row of DataFrame
-        field_values = []
-        # Add all IP fields to dataframe
-        for field in ip_fields:
-            if field == 'options':
-                # Retrieving number of options defined in IP Header
-                field_values.append(len(packet[IP].fields[field]))
-            else:
-                field_values.append(packet[IP].fields[field])
+def plotTimevsNum(d):
+    fig = px.line(d[['time','packetno']],range_y=[d['time'].min(),d['time'].max()])
+    fig.write_html("PcapAnalyserApp/templates/PcapAnalyserApp"+"/plot2.html")
 
-        field_values.append(packet.time)
 
-        layer_type = type(packet[IP].payload)
-        for field in tcp_fields:
-            try:
-                if field == 'options':
-                    field_values.append(len(packet[layer_type].fields[field]))
-                else:
-                    field_values.append(packet[layer_type].fields[field])
-            except:
-                field_values.append(None)
-
-        # Append payload
-        field_values.append(len(packet[layer_type].payload))
-        field_values.append(packet[layer_type].payload.original)
-        field_values.append(binascii.hexlify(packet[layer_type].payload.original))
-        field_values.append(i)
-        i+=1
-        # Add row to DF
-        df_append = pd.DataFrame([field_values], columns=dataframe_fields)
-        df = pd.concat([df, df_append], axis=0)
- 
-    # Reset Index
-    df = df.reset_index()
-    # Drop old index column
-    df = df.drop(columns="index")
-    for i in range(10):
-        print("\n", file=f)
-        print(f"--------------------Packet - {i}--------------------------", file=f)
-        print(df.iloc[i],file=f)
-        print("--------------------------------------------------------", file=f)
-        print("\n", file=f)
-
-    #print(df.shape)
-
-    print(df[['src', 'dst', 'sport', 'dport']].head(10),file=f)
-    print("-------------------------------------------",file=f)
-    print("\n",file=f)
-    print(df[['len','packetno']].head(10),file=f)
-    print("-------------------------------------------", file=f)
-    print("\n", file=f)
-    print(df[['time','packetno']].head(10),file=f)
-    print("-------------------------------------------", file=f)
-    print("\n", file=f)
-
-    #print(df[6:7]['len'],file=f)
-    return df
-
-def analyze(request,id):
-    ref=Document.objects.get(id=id)
-
-    file1 = "media/"+str(ref.document)
-   # file1 = '/home/rohith/Desktop/ciscoproject/PcapAnalyser/media/'+str(ref.document)
-    # file1 = "./pcaps/SSHv2.cap"
-    # /home/rohith/Desktop/ciscoproject/PcapAnalyser/media/documents/SSHv2.cap
-    print(file1)
-    cap = rdpcap(file1)
-    l = getSSHdata(cap)
-
-    p1 = cap[0]
-    #p1.pdfdump("./first.pdf",layer_shift=1)
-    #mytrace,err = traceroute(["www.google.com"])
-    #mytrace.graph(target=">trace.svg")
-    with open('filename.txt', 'w') as f:
-        print("-----------------------------------Packets-Summary--------------------------------------------")
-        GetHexData(p1,f)
-        buildDframe(cap,f)
-        print(l, file=f)
-    f = open('filename.txt', 'r')
-    file_content = f.read()
-    f.close()
-    return HttpResponse(file_content, content_type="text/plain")
 
 def test(request,id):
     ref=Document.objects.get(id=id)
@@ -163,7 +74,10 @@ def test(request,id):
     l = pint.getSSHdata(cap)
 
     p1 = cap[0]
-    #p1.pdfdump("./first.pdf",layer_shift=1)
+    dir = os.path.dirname(os.path.abspath(__file__))
+
+    file = os.path.join(dir, 'static')
+    p1.pdfdump(file+"/ps.pdf", layer_shift=1)
     #mytrace,err = traceroute(["www.google.com"])
     #mytrace.graph(target=">trace.svg")
     f = None
@@ -171,7 +85,7 @@ def test(request,id):
     for i in cap:
          hexdata.append(pint.GetHexData(i))
 
-   
+
     df = pint.buildDframe(cap)
     appdata = pint.getSSHdata(cap)
     pkt = []
@@ -179,9 +93,11 @@ def test(request,id):
     #print(df[['src', 'dst', 'sport', 'dport']])
     #print(df[['len','packetno']])
     #print(df[['time','packetno']])
+    plotSizevsNum(df)
+    plotTimevsNum(df)
     for i in df.itertuples():
         pkt.append(i)
-    
+
     names = df.columns.values.tolist()
     names.insert(0,'Packet no ')
     #print(type(pkt[0][5]))
@@ -190,21 +106,27 @@ def test(request,id):
 
     l = df[['packetno','time','src','dst','sport','dport','len',]].values.tolist()
     obj = df[['packetno','len']].values.tolist()
-    print(obj)
+    #print(obj)
     length = []
+    avg = 0.0
+    sum = 0
     for i in obj:
-        if i[1] >500:
+        sum = sum + i[1]
+    avg = sum/len(df)
+
+    for i in obj:
+        if i[1] > avg:
             length.append(i)
 
-    print(length)
+    #print(length)
 
     #print(l)
 
     i = 0
-    
+
     data = {"appdata":appdata,"packets":pkt,"pktfields":names,"frames":l,"len":length}
     return render(request,"PcapAnalyserApp/test.html",data)
-    
+
 
 
 def analyse_from_source(request):
@@ -221,7 +143,7 @@ def analyse_from_source(request):
     for i in cap:
          hexdata.append(pint.GetHexData(i))
 
-   
+
     df = pint.buildDframe(cap)
     appdata = pint.getSSHdata(cap)
     pkt = []
@@ -231,18 +153,24 @@ def analyse_from_source(request):
     #print(df[['time','packetno']])
     for i in df.itertuples():
         pkt.append(i)
-    
+
     names = df.columns.values.tolist()
     names.insert(0,'Packet no ')
     #print(type(pkt[0][5]))
     for i in range(len(pkt)):
         pkt[i] = zip(names,pkt[i])
     #print(pkt[0])
-    obj = df[['packetno', 'len']].values.tolist()
+    obj = df[['packetno', 'len','payload_raw']].values.tolist()
     print(obj)
     length = []
+    avg = 0.0
+    sum = 0
     for i in obj:
-        if i[1] > 500:
+        sum = sum + i[1]
+    avg = sum / len(df)
+
+    for i in obj:
+        if i[1] > avg:
             length.append(i)
 
 
@@ -250,7 +178,9 @@ def analyse_from_source(request):
     #print(l)
     #print(names)
     i = 0
-    
+    plen = [j[1] for j in length ]
+    pno = [k[0] for k in length ]
+    pieChart(pno,plen)
     data = {"appdata":appdata,"packets":pkt,"pktfields":names,"frames":l,"len":length}
     return render(request,"PcapAnalyserApp/test.html",data)
 
