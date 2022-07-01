@@ -187,13 +187,22 @@ def test(request,id):
     #print(type(pkt[0][5]))
     for i in range(len(pkt)):
         pkt[i] = zip(names,pkt[i])
-    print(pkt[0])
+
     l = df[['packetno','time','src','dst','sport','dport','len',]].values.tolist()
+    obj = df[['packetno','len']].values.tolist()
+    print(obj)
+    length = []
+    for i in obj:
+        if i[1] >500:
+            length.append(i)
+
+    print(length)
+
     #print(l)
-    print(names)
+
     i = 0
     
-    data = {"appdata":appdata,"packets":pkt,"pktfields":names,"frames":l}
+    data = {"appdata":appdata,"packets":pkt,"pktfields":names,"frames":l,"len":length}
     return render(request,"PcapAnalyserApp/test.html",data)
     
 
@@ -228,13 +237,21 @@ def analyse_from_source(request):
     #print(type(pkt[0][5]))
     for i in range(len(pkt)):
         pkt[i] = zip(names,pkt[i])
-    print(pkt[0])
+    #print(pkt[0])
+    obj = df[['packetno', 'len']].values.tolist()
+    print(obj)
+    length = []
+    for i in obj:
+        if i[1] > 500:
+            length.append(i)
+
+
     l = df[['packetno','time','src','dst','sport','dport','len',]].values.tolist()
     #print(l)
-    print(names)
+    #print(names)
     i = 0
     
-    data = {"appdata":appdata,"packets":pkt,"pktfields":names,"frames":l}
+    data = {"appdata":appdata,"packets":pkt,"pktfields":names,"frames":l,"len":length}
     return render(request,"PcapAnalyserApp/test.html",data)
 
 

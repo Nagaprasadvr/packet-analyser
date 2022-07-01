@@ -44,6 +44,31 @@
 </table>
     <br>
     <br>
+    <h1 style="color:teal;"><b>Analysis</b></h1>
+    <h1 style="color:teal;"><b>Important Packets</b></h1>
+     <table style="color:teal; height: 100%;"class="table col-md-6">
+        <thead>
+          <tr>
+            <th scope="col">Packet Number</th>
+              <th scope="col">Packet Length"</th>
+
+          </tr>
+        </thead>
+        <tbody>
+
+
+    {% for m in len %}
+    <td scope="col"><b>{{ m|index:"0" }}</b></td>
+    <td scope="col"><b>{{ m|index:"1" }}</b></td>
+
+    </tbody>
+
+    {% endfor %}
+
+</table>
+
+    <br>
+    <br>
 
     <h1 style="color:teal;"><b>In Depth Packet Details  </b></h1>
     {% for i in packets %}
@@ -52,8 +77,8 @@
         <table style="color:teal;width:50%;"class="table col-md-6">
             <thead>
               <tr>
-                <th scope="col">Field names</th>
-                <th scope="col">Values</th>
+                <th style="color:teal;" scope="col"><b>Layer Field names</b></th>
+                <th style="color:teal;" scope="col"><b>Values</b></th>
                
               </tr>
             </thead>
