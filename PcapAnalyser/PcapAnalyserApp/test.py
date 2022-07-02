@@ -48,5 +48,5 @@ cap = rdpcap(file1)
 # a[0].psdump("./isakmp_pkt.jpeg",layer_shift=1)
 a=cap[0]
 a.show()
-hexdump(cap)
+
 

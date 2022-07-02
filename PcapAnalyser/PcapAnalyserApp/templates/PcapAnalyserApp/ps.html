@@ -1,0 +1,16 @@
+{% extends 'PcapAnalyserApp/base.html' %}
+{% load static %}
+{% block content %}
+{% comment %} <style>
+    html{
+        background:black;
+    }
+</style> {% endcomment %}
+<div class="text-center shadow p-3 mb-5 bg-body rounded border"><iframe
+src="{% static 'ps.pdf' %}#toolbar=0"
+height="520px"
+width="700px"
+type="application/pdf"
+text-align="center"
+></iframe></div>
+{% endblock content %}

@@ -5,26 +5,28 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
 from httplib2 import Response
+from PcapAnalyser.settings import STATIC_URL
 from .models import Document
+from .PcapInterpreter import getSSHdata
 from .forms import DocumentForm
+from .PcapInterpreter import pieChart
 from django.contrib import messages
 import binascii
-from .PcapInterpreter import getSSHdata
 import sys
 import plotly.express as px
 import pandas as pd
 from struct import *
+from . import PcapInterpreter as pint
 import os
-from traceroute import traceroute
 from scapy.layers.l2 import Ether
 from scapy.layers.inet import IP
 from scapy.layers.inet import TCP, UDP
 import argparse
 from scapy.all import *
 import random
-from . import PcapInterpreter as pint
-# Create your view here.
 
+# Create your view here.
+absolute_path="/home/rishu/Projects/cisco_project_packet_analysis/PcapAnalyser/PcapAnalyserApp/templates/PcapAnalyserApp"
 
 def index(request):
     return render(request, "PcapAnalyserApp/base.html")
@@ -32,23 +34,15 @@ def index(request):
 def packet_details(request):
     return render(request, "PcapAnalyserApp/packet-details.html")    
 
+def packet_structure(request):
+    return render(request, "PcapAnalyserApp/ps.html")
+
 def packetno_size(request):
-    return render(request, "PcapAnalyserApp/plot0.html")
+    return render(request,"PcapAnalyserApp/plot1.html")
 
 
 def packetno_time(request):
-    return render(request, "PcapAnalyserApp/plot1.html")    
-      
-
-# def size_vs_no(request):
-#     dirt = os.path.abspath(__file__)
-#     file1 = os.path.join(dirt,"/media/documents/"+)
-#     #file1 = "/home/rishu/Projects/cisco_project_packet_analysis/PcapAnalyser/media/documents/SSHv2.cap"
-#     caps = rdpcap(file1)
-#     # for cap in caps:
-#     print(len(caps))
-
-    #return render(request, "PcapAnalyserApp/base.html")
+    return render(request,"PcapAnalyserApp/plot2.html")    
 
 def GetHexData(frame,f):
     hexpac = binascii.hexlify(bytes(frame))
@@ -104,52 +98,48 @@ def buildDframe(cap,f):
     df = df.reset_index()
     # Drop old index column
     df = df.drop(columns="index")
-    for i in range(10):
-        print("\n", file=f)
-        print(f"--------------------Packet - {i}--------------------------", file=f)
-        print(df.iloc[i],file=f)
-        print("--------------------------------------------------------", file=f)
-        print("\n", file=f)
+    print(df.iloc[1],file=f)
 
-    #print(df.shape)
+    print(df.shape)
 
-    print(df[['src', 'dst', 'sport', 'dport']].head(10),file=f)
-    print("-------------------------------------------",file=f)
-    print("\n",file=f)
-    print(df[['len','packetno']].head(10),file=f)
-    print("-------------------------------------------", file=f)
-    print("\n", file=f)
-    print(df[['time','packetno']].head(10),file=f)
-    print("-------------------------------------------", file=f)
-    print("\n", file=f)
+    print(df[['src', 'dst', 'sport', 'dport']],file=f)
+    print(df[['len','packetno']],file=f)
+    print(df[['time','packetno']],file=f)
 
-    #print(df[6:7]['len'],file=f)
+    print(df[6:7]['len'],file=f)
     return df
+
+def plotSizevsNum(d):
+    fig = px.line(d[['len','packetno']],x='packetno',y='len',title="Packet size vs Packet number")
+    fig.write_html(absolute_path+"/plot1.html")
+
+
+def plotTimevsNum(d):
+    fig = px.line(d[['time','packetno']],range_y=[d['time'].min(),d['time'].max()])
+    fig.write_html(absolute_path+"/plot2.html")
 
 def analyze(request,id):
     ref=Document.objects.get(id=id)
-
-    file1 = "media/"+str(ref.document)
-   # file1 = '/home/rohith/Desktop/ciscoproject/PcapAnalyser/media/'+str(ref.document)
+    file1 = '/home/rishu/Projects/cisco_project_packet_analysis/PcapAnalyser/media/'+str(ref.document)
     # file1 = "./pcaps/SSHv2.cap"
     # /home/rohith/Desktop/ciscoproject/PcapAnalyser/media/documents/SSHv2.cap
     print(file1)
     cap = rdpcap(file1)
-    l = getSSHdata(cap)
-
     p1 = cap[0]
-    #p1.pdfdump("./first.pdf",layer_shift=1)
-    #mytrace,err = traceroute(["www.google.com"])
-    #mytrace.graph(target=">trace.svg")
+    p1.pdfdump("/home/rishu/Projects/cisco_project_packet_analysis/PcapAnalyser/PcapAnalyserApp/static/ps.pdf",layer_shift=1)
+    # mytrace,err = traceroute(["www.google.com"])
+    # mytrace.graph(target=">trace.svg")
     with open('filename.txt', 'w') as f:
-        print("-----------------------------------Packets-Summary--------------------------------------------")
+        print("hello",file=f)
         GetHexData(p1,f)
-        buildDframe(cap,f)
-        print(l, file=f)
+        d=buildDframe(cap,f)
+    plotSizevsNum(d)
+    plotTimevsNum(d)
     f = open('filename.txt', 'r')
     file_content = f.read()
     f.close()
-    return HttpResponse(file_content, content_type="text/plain")
+    return redirect('packet-details')
+
 
 def test(request,id):
     ref=Document.objects.get(id=id)
@@ -163,7 +153,10 @@ def test(request,id):
     l = pint.getSSHdata(cap)
 
     p1 = cap[0]
-    #p1.pdfdump("./first.pdf",layer_shift=1)
+    dir = os.path.dirname(os.path.abspath(__file__))
+
+    file = os.path.join(dir, 'static')
+    p1.pdfdump(file+"/ps.pdf", layer_shift=1)
     #mytrace,err = traceroute(["www.google.com"])
     #mytrace.graph(target=">trace.svg")
     f = None
@@ -171,7 +164,7 @@ def test(request,id):
     for i in cap:
          hexdata.append(pint.GetHexData(i))
 
-   
+
     df = pint.buildDframe(cap)
     appdata = pint.getSSHdata(cap)
     pkt = []
@@ -179,23 +172,39 @@ def test(request,id):
     #print(df[['src', 'dst', 'sport', 'dport']])
     #print(df[['len','packetno']])
     #print(df[['time','packetno']])
+    plotSizevsNum(df)
+    plotTimevsNum(df)
     for i in df.itertuples():
         pkt.append(i)
-    
+
     names = df.columns.values.tolist()
     names.insert(0,'Packet no ')
     #print(type(pkt[0][5]))
     for i in range(len(pkt)):
         pkt[i] = zip(names,pkt[i])
-    print(pkt[0])
+
     l = df[['packetno','time','src','dst','sport','dport','len',]].values.tolist()
+    obj = df[['packetno','len']].values.tolist()
+    #print(obj)
+    length = []
+    avg = 0.0
+    sum = 0
+    for i in obj:
+        sum = sum + i[1]
+    avg = sum/len(df)
+
+    for i in obj:
+        if i[1] > avg:
+            length.append(i)
+
+    #print(length)
+
     #print(l)
-    print(names)
+
     i = 0
-    
-    data = {"appdata":appdata,"packets":pkt,"pktfields":names,"frames":l}
+
+    data = {"appdata":appdata,"packets":pkt,"pktfields":names,"frames":l,"len":length}
     return render(request,"PcapAnalyserApp/test.html",data)
-    
 
 
 def analyse_from_source(request):
@@ -212,7 +221,7 @@ def analyse_from_source(request):
     for i in cap:
          hexdata.append(pint.GetHexData(i))
 
-   
+
     df = pint.buildDframe(cap)
     appdata = pint.getSSHdata(cap)
     pkt = []
@@ -222,20 +231,38 @@ def analyse_from_source(request):
     #print(df[['time','packetno']])
     for i in df.itertuples():
         pkt.append(i)
-    
+
     names = df.columns.values.tolist()
     names.insert(0,'Packet no ')
     #print(type(pkt[0][5]))
     for i in range(len(pkt)):
         pkt[i] = zip(names,pkt[i])
-    print(pkt[0])
+    #print(pkt[0])
+    obj = df[['packetno', 'len','payload_raw']].values.tolist()
+    print(obj)
+    length = []
+    avg = 0.0
+    sum = 0
+    for i in obj:
+        sum = sum + i[1]
+    avg = sum / len(df)
+
+    for i in obj:
+        if i[1] > avg:
+            length.append(i)
+
+
     l = df[['packetno','time','src','dst','sport','dport','len',]].values.tolist()
     #print(l)
-    print(names)
+    #print(names)
     i = 0
-    
-    data = {"appdata":appdata,"packets":pkt,"pktfields":names,"frames":l}
+    plen = [j[1] for j in length ]
+    pno = [k[0] for k in length ]
+    pieChart(pno,plen)
+    data = {"appdata":appdata,"packets":pkt,"pktfields":names,"frames":l,"len":length}
     return render(request,"PcapAnalyserApp/test.html",data)
+
+
 
 
 
@@ -244,12 +271,12 @@ def model_form_upload(request):
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             a=form.save()
-            #filename = request.FILES
-            #print(filename)
-            #print(a.document)
+            print(a.document)
             messages.success(request, 'Pcap file uploaded successfully!')
-            return redirect('test',a.id)
+            return redirect('analyze',id=a.id)
             # return Response({}, status=statu)
     else:
         form = DocumentForm()
-        return render(request, 'PcapAnalyserApp/model_form_upload.html', {'form': form})
+    return render(request, 'PcapAnalyserApp/model_form_upload.html', {
+        'form': form
+    })
