@@ -47,7 +47,8 @@
 </head>
 
 <body>
-  <div class="wrap">
+  
+  <div>
      <!-- ======= Header ======= -->
      <header id="header" class="d-flex align-items-center">
       <div class="container d-flex align-items-center justify-content-between">
@@ -65,9 +66,6 @@
             <li><a class="nav-link scrollto " href="{% url 'upload-file' %}">Upload File</a></li>
             <li><a class="nav-link scrollto" href="#">Download File</a></li>
 
-            <li><a href="#">Blog</a></li>
-            <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-
 
           </ul>
           <i class="bi bi-list mobile-nav-toggle"></i>
@@ -84,9 +82,17 @@
         </div>
       {% endfor %}
     {% endif %}
+    <br>
+    <br>
+    <br>
     {% block content %}
 
     {% endblock %}
+    <section>
+      <span class="img-container  element"> <!-- Inline parent element -->
+        <img src="{% static 'PcapAnalyserApp/assets/img/cyber-attack.png' %}">
+      </span>
+    </section>
     <!-- ======= Hero Section ======= -->
    <!-- End Hero -->
     </div>

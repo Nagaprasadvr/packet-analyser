@@ -2,13 +2,8 @@
 {% load static %}
 {% block content %}
 <div class="text-center">
-  <h2>Packet Summary</h2>
-  {% comment %} <p>{% lorem 1 b random %}</p>
-  <p>{% lorem 1 b random %}</p>
-  <p>{% lorem 1 b random %}</p>
-  <p>{% lorem 1 b random %}</p> {% endcomment %}
-
-  <h3>Plots Generated</h3>
+  <h1>Packet Summary</h1>
+  <h3>Analysis:</h3>
   <div>{{content|safe}}</div>
   <a href="{% url 'packetno-size' %}">
     <button type="button" class="btn btn-info">
@@ -23,6 +18,11 @@
   <a href="{% url 'ps' %}">
     <button type="button" class="btn btn-info">  
       Packet structure
+    </button>
+  </a>
+  <a href="{% url 'analyse-from-source' %}">
+    <button type="button" class="btn btn-info">  
+      Analyze from Sources
     </button>
   </a>
 </div>
